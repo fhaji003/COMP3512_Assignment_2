@@ -54,3 +54,32 @@ list.addEventListener("click", (event) => {
         alert("Product ID: " + id + " - " + product.title);
     }
 });
+
+
+// Show the slected view and hide the other views
+function showView(viewId) {
+    let views = document.querySelectorAll("main > section");
+
+    for (let view of views) {
+        view.classList.add("hidden")
+    }
+
+    let selectedView = document.querySelector("#" + viewId);
+    selectedView.classList.remove("hidden");
+}
+
+// Make the header buttons switch between views
+let header = document.querySelector("header");
+//switches views when a header button is clicked
+header.addEventListener("click", function(e) {
+    let button = e.target;
+
+    if(button.tagName === "SPAN") {
+        button = button.parentElement;
+    }
+    let viewId = button.dataset.view;
+    if(viewId) {
+        showView(viewId);
+    }
+});
+
