@@ -3,14 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COMP 3512 Store Milestone 1</title>
+    <title>COMP 3512 Store</title>
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/script.js" type="module"></script>
 
 </head>
 <body>
-    <h1>Browse Products</h1>
-    <section id="products"></section>
+    <header>
+        <button data-view="home-view">COMP3512 Store</button>
+
+        <nav>
+            <button data-view="home-view">Home</button>
+            <button data-view="browse-view">Browse</button>
+            <button id="about-btn">About</button>
+        </nav>
+
+        <button data-view="cart-view">
+            Cart <span id="cart-count">0</span>
+        </button>
+    </header>
+
+     <main>
+            <section id="browse-view">
+                <h2>Browse Products</h2>
+                <section id="products"></section>
+            </section>
+            <section id="home-view">
+                <h2>Home</h2>
+            </section>
+            <section id="product-view">
+                <h2>Product</h2>
+            </section>
+            <section id="cart-view">
+                <h2>Shopping Cart</h2>
+            </section>
+        </main>
+        <footer>
+            <a href="https://github.com/fhaji003/COMP3512_Assignment_2"> Github Repo </a>
+            <p>Fawaz Haji</p>
+            <p>Arvin Johal</p>
+            <p>COMP 3512 - Randy Connolly - Fall 2026 </p>
+            
+        </footer>
+
+        <dialog id="about-dialog">
+            <button id="close-x">x</button>
+            <h2>About Us</h2>
+            <p>For assignment 2 for COMP 3512, Arvin and Fawaz will be working together</p>
+            <p>The site is a single-page store app where users can browse products, view details, and use a shopping cart</p>
+            <h3>Technologies</h3>
+            <ul>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>JavaScript</li>
+            </ul>
+            <h3>Team</h3>
+            <ul>
+                <li>Fawaz Haji</li>
+                <li>Arvin Johal</li>
+            </ul>
+            <a href="https://github.com/fhaji003/COMP3512_Assignment_2" >Github Repo</a>
+            <button id="close-btn">Close</button>
+        </dialog>
+
 </body>
 </html>
 
