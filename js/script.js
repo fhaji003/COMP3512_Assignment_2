@@ -83,3 +83,27 @@ header.addEventListener("click", function(e) {
     }
 });
 
+
+
+// Select the About dialog
+let dialog = document.querySelector("#about-dialog");
+
+// Open the dialog when About is clicked
+let aboutBtn = document.querySelector("#about-btn");
+aboutBtn.addEventListener("click", function() {
+    dialog.showModal();
+});
+
+// function to close the dialog
+function closeAbout() {
+    dialog.close();
+}
+
+// Close the dialog with the close button
+let closeBtn = document.querySelector("#close-btn");
+closeBtn.addEventListener("click", closeAbout);
+
+// Close the dialog with X button
+let closeX = document.querySelector("#close-x");
+closeX.addEventListener("click", closeAbout);
+
