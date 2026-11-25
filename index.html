@@ -8,6 +8,7 @@
     <script src="js/script.js" type="module"></script>
 
 </head>
+<div id="toast"></div>
 <body>
     <header>
         <button data-view="home-view">COMP3512 Store</button>
@@ -32,13 +33,17 @@
                 <h2>Home</h2>
             </section>
             <section id="product-view">
+                <p id="product-breadcrumb"></p>
                 <img id="product-image">
                 <h2 id="product-title"></h2>
                 <p id="product-price"></p>
                 <p id="product-description"></p>
                 <p id="product-sku"></p>
                 <p id="product-rating"></p>
+                <div id="product-tags"></div>
                 <p id="product-stock"></p>
+                <input type="number" id="product-quantity" value="1" min="1">
+                <button id="add-to-cart-btn">Add to Cart</button>
             </section>
             <section id="cart-view">
                 <h2>Shopping Cart</h2>
@@ -47,7 +52,6 @@
         <footer>
             <a href="https://github.com/fhaji003/COMP3512_Assignment_2"> Github Repo </a>
             <p>Fawaz Haji</p>
-            <p>Arvin Johal</p>
             <p>COMP 3512 - Randy Connolly - Fall 2026 </p>
             
         </footer>
@@ -55,7 +59,7 @@
         <dialog id="about-dialog">
             <button id="close-x">x</button>
             <h2>About Us</h2>
-            <p>For assignment 2 for COMP 3512, Arvin and Fawaz will be working together</p>
+            <p>COMP 3512 Assignment 2 by Fawaz Haji</p>
             <p>The site is a single-page store app where users can browse products, view details, and use a shopping cart</p>
             <h3>Technologies</h3>
             <ul>
@@ -63,10 +67,9 @@
                 <li>CSS</li>
                 <li>JavaScript</li>
             </ul>
-            <h3>Team</h3>
+            <h3>About Me</h3>
             <ul>
                 <li>Fawaz Haji</li>
-                <li>Arvin Johal</li>
             </ul>
             <a href="https://github.com/fhaji003/COMP3512_Assignment_2" >Github Repo</a>
             <button id="close-btn">Close</button>
