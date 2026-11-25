@@ -1,7 +1,19 @@
-import config from '../data-minifed.json' with { type: 'json' };
 
-// Get the first 20 products
-const first20 = config.products.slice(0, 20);
+// Save products to localStorage
+function saveProducts(products) {
+    localStorage.setItem("products", JSON.stringify(products));
+}
+
+// Load products from localStorage
+function loadProducts() {
+    return JSON.parse(localStorage.getItem("products"));
+}
+
+// Start the app and display the products 
+function startApp() {
+    displayProducts(products);
+}
+
 
 // Find the container
 const list = document.querySelector("#products");
@@ -40,17 +52,18 @@ function displayProducts(products) {
         list.appendChild(card);
     }
 }
-displayProducts(first20);
 
 // Handle click events on the list
-list.addEventListener("click", (event) => {
+list.addEventListener("click", function(event) {
     const id = event.target.parentElement.dataset.id;
 
-    if (event.target.nodeName === "IMG") {
-        alert("Product ID: " + id);
-    } else if (event.target.nodeName === "BUTTON") {
-        const product = first20.find(p => p.id == id);
+    let product = products.find(p => p.id ==id);
 
+    if (event.target.nodeName === "IMG" || event.target.nodeName === "H2") {
+        displayProduct(product);
+        showView("product-view");
+
+    } else if (event.target.nodeName === "BUTTON") {
         alert("Product ID: " + id + " - " + product.title);
     }
 });
@@ -59,14 +72,13 @@ list.addEventListener("click", (event) => {
 // Show the slected view and hide the other views
 function showView(viewId) {
     let views = document.querySelectorAll("main > section");
-
     for (let view of views) {
         view.classList.add("hidden")
     }
-
     let selectedView = document.querySelector("#" + viewId);
-    selectedView.classList.remove("hidden");
+    selectedView.classList.remove("hidden")
 }
+showView("home-view");
 
 // Make the header buttons switch between views
 let header = document.querySelector("header");
@@ -107,3 +119,66 @@ closeBtn.addEventListener("click", closeAbout);
 let closeX = document.querySelector("#close-x");
 closeX.addEventListener("click", closeAbout);
 
+// Check if products are already saved
+let products = loadProducts();
+
+if (products) {
+    console.log("from storage", products.length);
+    startApp();
+
+} else {
+// fetch the data
+let url = "https://dummyjson.com/products?limit=100"
+
+fetch(url)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data.products.length);
+        saveProducts(data.products);
+        products = data.products;
+        startApp();
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+}
+
+// Display the selected product 
+function displayProduct(product) {
+    let image = document.querySelector("#product-image");
+    let title = document.querySelector("#product-title");
+    let price = document.querySelector("#product-price");
+    let sku = document.querySelector("#product-sku");
+    let stock = document.querySelector("#product-stock");
+    let rating = document.querySelector("#product-rating");
+    let description = document.querySelector("#product-description");
+
+    title.textContent = product.title;
+    price.textContent = "$" + product.price;
+    sku.textContent = "SKU: " + product.sku;
+    stock.textContent = product.availabilityStatus;
+    rating.textContent = prodRating(product.rating);
+    description.textContent = product.description;
+
+    image.src = product.images[0];
+    image.alt = product.title;
+}
+
+
+
+// Convert a product rating into stars
+function prodRating(rating) {
+    let roundedRating = Math.round(rating);
+    let star = "";
+
+    for (let i =1; i <= 5; i++) {
+        if (i <= roundedRating) {
+            star += "★";
+        } else {
+            star += "☆";
+        }
+    }
+    return star;
+}
