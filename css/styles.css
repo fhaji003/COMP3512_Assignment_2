@@ -54,3 +54,11 @@ button:hover {
 .hidden {
     display: none;
 }
+
+#toast {
+    display: none;
+}
+
+#toast.show {
+    display: block;
+}
