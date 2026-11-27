@@ -194,6 +194,7 @@ function updateSummary() {
 // Start the app and display the products 
 function startApp() {
     applyFilters();
+    displayFeatured();
     createCategoryFilters();
     createRatingFilters();
     updateCartCount();
@@ -233,20 +234,19 @@ let currentProduct;
 
 
 // Create a product card for each product and append it to the list
-function displayProducts(products) {
-    while(list.firstChild) {
-        list.removeChild(list.firstChild);
+function displayProducts(products, container) {
+    while(container.firstChild) {
+        container.removeChild(container.firstChild);
     }
     for (let product of products) {
         const card = createProductCard(product);
-        list.appendChild(card);
+        container.appendChild(card);
     }
 }
 
-// Handle click events on the list
-list.addEventListener("click", function(event) {
+// Handle clicks on product cards
+function handleProductClick(event) {
     const id = event.target.parentElement.dataset.id;
-
     let product = products.find(p => p.id ==id);
 
     if (event.target.nodeName === "IMG" || event.target.nodeName === "H2") {
@@ -257,8 +257,15 @@ list.addEventListener("click", function(event) {
         addToCart(product, 1);
         showToast(product.title + " added to cart");
     }
-});
+}
+list.addEventListener("click", handleProductClick);
 
+// Show top rated products on the home
+function displayFeatured() {
+    let featured = products.slice().sort((a, b) => b.rating - a.rating).slice(0, 4);
+    displayProducts(featured, document.querySelector("#featured"));
+}
+document.querySelector("#featured").addEventListener("click", handleProductClick);
 
 // Show the slected view and hide the other views
 function showView(viewId) {
@@ -289,6 +296,10 @@ header.addEventListener("click", function(e) {
     }
 });
 
+// The Shop Now button goes to Browse
+document.querySelector("#shop-now-btn").addEventListener("click", function() {
+    showView("browse-view");
+});
 
 
 // Select the About dialog
@@ -309,6 +320,17 @@ addToCartBtn.addEventListener("click", function () {
     showToast(currentProduct.title + " added to cart");
     
     });
+
+// Switch between the specifications and reviews tabs
+document.querySelector("#product-tabs").addEventListener("click", function(e) {
+    if (e.target.nodeName === "BUTTON") {
+        document.querySelector("#specs-panel").classList.add("hidden");
+        document.querySelector("#reviews-panel").classList.add("hidden");
+
+        document.querySelector("#" + e.target.dataset.tab).classList.remove("hidden");
+    }
+});
+
      // Remove an item from the cart
     let cartItems = document.querySelector("#cart-items");
     cartItems.addEventListener("click", function(e) {
@@ -465,9 +487,20 @@ function displayProduct(product) {
     let description = document.querySelector("#product-description");
     let breadcrumb = document.querySelector("#product-breadcrumb");
 
+    let specWeight = document.querySelector("#spec-weight");
+    let specDimensions = document.querySelector("#spec-dimensions");
+    let specWarranty = document.querySelector("#spec-warranty");
+    let specShipping = document.querySelector("#spec-shipping");
+    let specReturn = document.querySelector("#spec-return");
+
+    const reviewList = document.querySelector("#reviews-list");
+
+    while (reviewList.firstChild) {
+        reviewList.removeChild(reviewList.firstChild);
+    }
     while (tags.firstChild) {
         tags.removeChild(tags.firstChild);
-}
+    }
 
     for (let tag of product.tags) {
         const tagPill = document.createElement("span");
@@ -483,6 +516,36 @@ function displayProduct(product) {
     rating.textContent = prodRating(product.rating);
     description.textContent = product.description;
     breadcrumb.textContent = "Home > " + product.category + " > " + product.title;
+
+    specWeight.textContent = "Weight: " + product.weight + " kg";
+
+    specDimensions.textContent = "Dimensions: " + product.dimensions.width + " x " 
+        + product.dimensions.height + " x " 
+        + product.dimensions.depth + " cm";
+
+    specWarranty.textContent = "Warranty: " + product.warrantyInformation;
+    specShipping.textContent = "Shipping: " + product.shippingInformation;
+    specReturn.textContent = "Return Policy: " + product.returnPolicy;
+
+    for (let review of product.reviews) {
+        let li = document.createElement("li");
+
+        let rating = document.createElement("p");
+        rating.textContent = prodRating(review.rating);
+
+        let comment = document.createElement("p");
+        comment.textContent = review.comment;
+
+        let nameDate = document.createElement("p");
+        nameDate.textContent = review.reviewerName + " - " + new Date(review.date).toLocaleDateString();
+
+
+        li.appendChild(rating);
+        li.appendChild(comment);
+        li.appendChild(nameDate);
+
+        reviewList.appendChild(li);
+    }
 
     image.src = product.images[0];
     image.alt = product.title;
@@ -545,7 +608,7 @@ function applyFilters() {
         results.sort((a, b) => a.category < b.category ? -1 : 1);
     }
 
-    displayProducts(results);
+    displayProducts(results, list);
 
     showActiveFilters(selectedCategories, selectedRatings);
 
