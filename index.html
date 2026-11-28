@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <button data-view="home-view">COMP3512 Store</button>
+        <button data-view="home-view" id="logo">COMP3512 Store</button>
 
         <nav>
             <button data-view="home-view">Home</button>
@@ -26,6 +26,7 @@
      <main>
             <section id="browse-view">
                 <h2>Browse Products</h2>
+                <div id="browse-layout">
                 <aside id="filters">
                     <h3 data-section="name-section">Name</h3>
 
@@ -62,6 +63,7 @@
                     <p id="no-results" class="hidden">No products match your filters</p>
 
                     <section id="products"></section>
+                    </div>
                 </div>
             </section>
 
@@ -78,16 +80,23 @@
 
             <section id="product-view">
                 <p id="product-breadcrumb"></p>
-                <img id="product-image">
-                <h2 id="product-title"></h2>
-                <p id="product-price"></p>
-                <p id="product-description"></p>
-                <p id="product-sku"></p>
-                <p id="product-rating"></p>
-                <div id="product-tags"></div>
-                <p id="product-stock"></p>
-                <input type="number" id="product-quantity" value="1" min="1">
-                <button id="add-to-cart-btn">Add to Cart</button>
+
+                <div id="product-layout">
+                    <img id="product-image">
+
+                    <div id="product-details">
+
+                        <h2 id="product-title"></h2>
+                        <p id="product-price"></p>
+                        <p id="product-description"></p>
+                        <p id="product-sku"></p>
+                        <p id="product-rating"></p>
+                        <div id="product-tags"></div>
+                        <p id="product-stock"></p>
+                        <input type="number" id="product-quantity" value="1" min="1">
+                        <button id="add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </div>
 
             <div id="product-tabs">
                 <button data-tab="specs-panel">Specifications</button>
